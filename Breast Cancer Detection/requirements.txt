@@ -1,0 +1,27 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+streamlit>=1.38,<2
+numpy>=1.24,<2
+pandas>=2.0
+pillow>=10.0
+scikit-learn>=1.7,<1.9
+joblib>=1.3
+xgboost>=2.0
+
+# Pinned EXACTLY (not >=) and to the small CPU-only build:
+#  - Unpinned torch/torchvision let pip grab whatever is newest at deploy
+#    time. A newer torchvision can rename EfficientNet's internal layers,
+#    which is exactly what breaks model.load_state_dict(...) with an
+#    "EfficientNet" error. Keep this pair matched to whatever produced the
+#    .pth checkpoint (retrain or re-export if you truly need a newer pair).
+#  - "+cpu" wheels are far smaller than the default CUDA-bundled ones,
+#    which avoids slow/failed installs on CPU-only hosting like Streamlit
+#    Community Cloud.
+torch==2.1.2+cpu
+torchvision==0.16.2+cpu
+
+# Pinned exactly for the same reason as torch/torchvision: grad-cam's public
+# API has changed across releases.
+grad-cam==1.5.5
+
+opencv-python-headless>=4.8
